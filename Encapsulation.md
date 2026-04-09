@@ -350,9 +350,4 @@ So:
 
 ---
 
-# 🚀 Next Step — Day 3
-
-Next important concept:
-
-# **Inheritance**
 
