@@ -145,6 +145,103 @@ protected:
 
 ---
 
+Here are three clear C++ code examples that demonstrate **public**, **private**, and **protected** access specifiers in action:
+
+---
+
+### 🔹 Example 1: Public Access
+```cpp
+#include <iostream>
+using namespace std;
+
+class Student {
+public:
+    int age;  // Public: accessible everywhere
+};
+
+int main() {
+    Student s;
+    s.age = 20;  // Accessible directly
+    cout << "Age: " << s.age << endl;
+    return 0;
+}
+```
+✅ Output: `Age: 20`  
+👉 Public members can be accessed directly outside the class.
+
+---
+
+### 🔹 Example 2: Private Access
+```cpp
+#include <iostream>
+using namespace std;
+
+class Employee {
+private:
+    int salary;  // Private: accessible only inside class
+
+public:
+    void setSalary(int s) {
+        salary = s;  // Allowed inside class
+    }
+    int getSalary() {
+        return salary;  // Allowed inside class
+    }
+};
+
+int main() {
+    Employee e;
+    // e.salary = 5000; ❌ Error: salary is private
+    e.setSalary(5000);  // ✅ Use setter
+    cout << "Salary: " << e.getSalary() << endl;
+    return 0;
+}
+```
+✅ Output: `Salary: 5000`  
+👉 Private members require **getter/setter functions** to access them.
+
+---
+
+### 🔹 Example 3: Protected Access
+```cpp
+#include <iostream>
+using namespace std;
+
+class Person {
+protected:
+    int marks;  // Protected: accessible in derived class
+};
+
+class Student : public Person {
+public:
+    void setMarks(int m) {
+        marks = m;  // ✅ Accessible in derived class
+    }
+    void showMarks() {
+        cout << "Marks: " << marks << endl;
+    }
+};
+
+int main() {
+    Student s;
+    // s.marks = 90; ❌ Error: marks is protected
+    s.setMarks(90);  // ✅ Access via derived class method
+    s.showMarks();
+    return 0;
+}
+```
+✅ Output: `Marks: 90`  
+👉 Protected members are **not accessible outside the class**, but **can be used in derived classes**.
+
+---
+
+✨ These three examples neatly illustrate the difference:
+- **Public** → accessible everywhere.  
+- **Private** → only inside the class.  
+- **Protected** → inside class + derived classes.  
+
+Would you like me to also create a **combined example** showing all three specifiers in a single class for easier comparison?
+
 # Topic 4: Constructor
 
 ### Definition
