@@ -634,41 +634,264 @@ Box2 length: 20
 ---
 # Topic 5: Destructor
 
-### Definition
+Alright chethan, here are **complete notes on Destructors in C++** with full code examples so you can study them alongside constructors.
 
-Called automatically when object is destroyed.
+---
 
-### Example
+# 📘 Full Notes: Destructors in C++
 
+## 🔹 What is a Destructor?
+- A **destructor** is a special member function of a class.  
+- Same name as the class but preceded by a **tilde (~)**.  
+- Called **automatically** when an object goes out of scope or is deleted.  
+- Used to **release resources** (like memory, files, or connections).  
+- Has **no return type** and **no parameters**.  
+- Only **one destructor per class** (cannot be overloaded).
+
+---
+
+## 🔹 Why Destructors Are Needed
+- To clean up when an object is destroyed.  
+- Prevents **memory leaks** (unused memory not freed).  
+- Ensures files or resources are properly closed.  
+- Important in programs that use **dynamic memory allocation** (`new` / `delete`).  
+
+---
+
+## 🔹 Syntax
 ```cpp
-class Student
-{
+class ClassName {
 public:
-    ~Student()
-    {
-        cout<<"Destructor Called";
+    ~ClassName() {
+        // cleanup code
     }
 };
 ```
 
 ---
 
-### Purpose
+## 🔹 Example 1: Basic Destructor
+```cpp
+#include <iostream>
+using namespace std;
 
-* Free memory
-* Close files
-* Release resources
+class Student {
+public:
+    Student() {
+        cout << "Constructor called!" << endl;
+    }
+
+    ~Student() {
+        cout << "Destructor called!" << endl;
+    }
+};
+
+int main() {
+    Student s;  // Constructor runs here
+    // Destructor runs automatically at end of scope
+    return 0;
+}
+```
+
+👉 Output:
+```
+Constructor called!
+Destructor called!
+```
 
 ---
 
-# Constructor vs Destructor
+## 🔹 Example 2: Destructor with Dynamic Memory
+```cpp
+#include <iostream>
+using namespace std;
 
-| Constructor         | Destructor             |
-| ------------------- | ---------------------- |
-| Initializes object  | Destroys object        |
-| Same name as class  | ~ClassName()           |
-| Called at creation  | Called at deletion     |
-| Can have parameters | Cannot have parameters |
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int s) {
+        size = s;
+        data = new int[size];  // allocate memory
+        cout << "Constructor: Memory allocated!" << endl;
+    }
+
+    ~Array() {
+        delete[] data;  // free memory
+        cout << "Destructor: Memory freed!" << endl;
+    }
+};
+
+int main() {
+    Array arr(5);  // Constructor allocates memory
+    // Destructor frees memory automatically at end
+    return 0;
+}
+```
+
+👉 Output:
+```
+Constructor: Memory allocated!
+Destructor: Memory freed!
+```
+
+---
+
+## 🔹 Example 3: Destructor with File Handling
+```cpp
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+class Logger {
+private:
+    ofstream file;
+
+public:
+    Logger() {
+        file.open("log.txt");
+        cout << "Constructor: File opened!" << endl;
+    }
+
+    ~Logger() {
+        file.close();
+        cout << "Destructor: File closed!" << endl;
+    }
+};
+
+int main() {
+    Logger log;  // File opened
+    // Destructor closes file automatically
+    return 0;
+}
+```
+
+👉 Output:
+```
+Constructor: File opened!
+Destructor: File closed!
+```
+
+---
+
+## 🔹 Key Points
+- Destructor is **automatic** → no need to call manually.  
+- Only **one destructor per class**.  
+- Cannot be overloaded.  
+- Used for **cleanup tasks** (memory, files, connections).  
+- Runs in **reverse order of construction** (last object created is destroyed first).  
+
+---
+
+## 🔹 Constructor vs Destructor
+
+| Feature              | Constructor | Destructor |
+|----------------------|-------------|------------|
+| Name                 | Same as class | ~ClassName |
+| Purpose              | Initialize object | Clean up resources |
+| Called automatically | At object creation | At object destruction |
+| Parameters           | Allowed (can overload) | Not allowed (only one) |
+| Overloading          | Possible | Not possible |
+
+---
+
+✅ **Summary:**  
+- **Constructor** → initializes objects.  
+- **Destructor** → cleans up when objects are destroyed.  
+- Together, they ensure safe **creation and destruction** of objects.  
+
+---
+Perfect, chethan! Let’s put **constructors and destructors together** in one full program so you can see how they work side by side.
+
+---
+
+# 📘 Combined Notes: Constructor + Destructor in C++
+
+## 🔹 Key Idea
+- **Constructor** → runs when object is created (initializes data).  
+- **Destructor** → runs when object is destroyed (cleans up resources).  
+- They always come in **pairs**: constructor at the start, destructor at the end.  
+
+---
+
+## 🔹 Full Code Example
+```cpp
+#include <iostream>
+using namespace std;
+
+class Student {
+private:
+    int age;
+
+public:
+    // Constructor
+    Student(int a) {
+        age = a;
+        cout << "Constructor: Object created with age = " << age << endl;
+    }
+
+    // Destructor
+    ~Student() {
+        cout << "Destructor: Object destroyed for age = " << age << endl;
+    }
+
+    void showAge() {
+        cout << "Age is: " << age << endl;
+    }
+};
+
+int main() {
+    cout << "Program started..." << endl;
+
+    Student s1(20);   // Constructor runs here
+    s1.showAge();
+
+    {
+        Student s2(25);  // Constructor runs
+        s2.showAge();
+        // Destructor runs automatically when s2 goes out of scope (end of block)
+    }
+
+    cout << "Back in main, before ending..." << endl;
+
+    // Destructor for s1 runs automatically at end of main
+    return 0;
+}
+```
+
+---
+
+## 🔹 Example Output
+```
+Program started...
+Constructor: Object created with age = 20
+Age is: 20
+Constructor: Object created with age = 25
+Age is: 25
+Destructor: Object destroyed for age = 25
+Back in main, before ending...
+Destructor: Object destroyed for age = 20
+```
+
+---
+
+## 🔹 Key Points
+- Constructor runs **when object is created**.  
+- Destructor runs **when object goes out of scope** or program ends.  
+- If you create objects inside a block `{ ... }`, their destructor runs as soon as the block ends.  
+- Useful for managing **resources** (memory, files, connections).  
+
+---
+
+✅ **Summary:**  
+- Constructor → sets up the object.  
+- Destructor → cleans up the object.  
+- Together, they ensure safe **lifecycle management** of objects.  
+
+---
+
 
 ---
 
